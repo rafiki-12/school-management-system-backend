@@ -1,0 +1,2269 @@
+{
+  "info": {
+    "_postman_id": "5c99cdd3-e99c-4acd-9863-d5c84f270021",
+    "name": "School Management System Midterm",
+    "description": "Run once against an empty school_management_system database. Seed and test requests use API endpoints only. D1 past-date validation remains enabled; two exams are created on a valid date, transitioned, then their date is updated through PUT to satisfy the paper seed scenario.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "0 - Seed data through API",
+      "item": [
+        {
+          "name": "Seed - Mathematics",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/subjects/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Mathematics\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/subjects/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture subjectMath\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.name === \"Mathematics\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"subjectMath\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Physics",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/subjects/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Physics\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/subjects/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture subjectPhysics\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.name === \"Physics\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"subjectPhysics\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - English",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/subjects/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"English\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/subjects/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture subjectEnglish\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.name === \"English\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"subjectEnglish\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Kinyarwanda",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/subjects/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kinyarwanda\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/subjects/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture subjectKin\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.name === \"Kinyarwanda\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"subjectKin\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - classroom 1",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/classrooms/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomNumber\": 1,\n  \"name\": \"Classroom 1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/classrooms/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture classroom1Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.roomNumber === 1);\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"classroom1Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - classroom 2",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/classrooms/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomNumber\": 2,\n  \"name\": \"Classroom 2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/classrooms/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture classroom2Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.roomNumber === 2);\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"classroom2Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - classroom 3",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/classrooms/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomNumber\": 3,\n  \"name\": \"Classroom 3\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/classrooms/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture classroom3Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.roomNumber === 3);\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"classroom3Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - classroom 4",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/classrooms/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomNumber\": 4,\n  \"name\": \"Classroom 4\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/classrooms/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture classroom4Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.roomNumber === 4);\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"classroom4Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - teacher1",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/teachers/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Aline\",\n  \"lastName\": \"Teacher\",\n  \"email\": \"aline.seed@example.com\",\n  \"classroom\": {\n    \"id\": \"{{classroom1Id}}\"\n  },\n  \"subjects\": [\n    {\n      \"id\": \"{{subjectMath}}\"\n    },\n    {\n      \"id\": \"{{subjectPhysics}}\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/teachers/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture teacher1Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.email === \"aline.seed@example.com\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"teacher1Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - teacher2",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/teachers/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Jean\",\n  \"lastName\": \"Teacher\",\n  \"email\": \"jean.seed@example.com\",\n  \"classroom\": {\n    \"id\": \"{{classroom2Id}}\"\n  },\n  \"subjects\": [\n    {\n      \"id\": \"{{subjectEnglish}}\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/teachers/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture teacher2Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.email === \"jean.seed@example.com\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"teacher2Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - teacher3",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/teachers/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Marie\",\n  \"lastName\": \"Teacher\",\n  \"email\": \"marie.seed@example.com\",\n  \"classroom\": {\n    \"id\": \"{{classroom3Id}}\"\n  },\n  \"subjects\": [\n    {\n      \"id\": \"{{subjectMath}}\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/teachers/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture teacher3Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.email === \"marie.seed@example.com\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"teacher3Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - student S4-2026-018",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/students/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Rafiki\",\n  \"lastName\": \"Iradukunda\",\n  \"regNumber\": \"S4-2026-018\",\n  \"guardianPhone\": \"+250700000018\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/students/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture student018Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.regNumber === \"S4-2026-018\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"student018Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - student S4-2026-019",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/students/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Aline\",\n  \"lastName\": \"Iradukunda\",\n  \"regNumber\": \"S4-2026-019\",\n  \"guardianPhone\": \"+250700000018\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/students/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture student019Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.regNumber === \"S4-2026-019\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"student019Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - student S4-2026-020",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/students/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Eric\",\n  \"lastName\": \"Uwimana\",\n  \"regNumber\": \"S4-2026-020\",\n  \"guardianPhone\": \"+250700000018\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/students/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture student020Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.regNumber === \"S4-2026-020\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"student020Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - student S4-2026-021",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/students/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Diane\",\n  \"lastName\": \"Mukamana\",\n  \"regNumber\": \"S4-2026-021\",\n  \"guardianPhone\": \"+250700000018\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/students/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture student021Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.regNumber === \"S4-2026-021\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"student021Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - student S4-2026-022",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/students/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Claude\",\n  \"lastName\": \"Niyonsenga\",\n  \"regNumber\": \"S4-2026-022\",\n  \"guardianPhone\": \"+250700000018\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/students/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture student022Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.regNumber === \"S4-2026-022\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"student022Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 1 - voided pair",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-10-29\",\n  \"status\": \"MARKED\",\n  \"title\": \"Seed exam 1 - voided pair\",\n  \"student\": {\n    \"id\": \"{{student018Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher1Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/exams/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture exam1Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.title === \"Seed exam 1 - voided pair\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"exam1Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - void first same-day exam",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/{{exam1Id}}/status?status=VOIDED"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 2 - marked pair",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-10-29\",\n  \"status\": \"MARKED\",\n  \"title\": \"Seed exam 2 - marked pair\",\n  \"student\": {\n    \"id\": \"{{student018Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher1Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/exams/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture exam2Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.title === \"Seed exam 2 - marked pair\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"exam2Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - mark pair exam written",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/{{exam2Id}}/status?status=WRITTEN"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - mark pair exam marked",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/{{exam2Id}}/status?status=MARKED"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - grade for marked exam",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/grades/save?examId={{exam2Id}}",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subjectName\": \"Mathematics\",\n  \"comment\": \"Seed grade for marked exam\",\n  \"marks\": 78\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 3 - written",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-10-30\",\n  \"status\": \"MARKED\",\n  \"title\": \"Seed exam 3 - written\",\n  \"student\": {\n    \"id\": \"{{student018Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher1Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/exams/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture exam3Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.title === \"Seed exam 3 - written\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"exam3Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 3 - written written",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/{{exam3Id}}/status?status=WRITTEN"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 4 - voided",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-10-31\",\n  \"status\": \"MARKED\",\n  \"title\": \"Seed exam 4 - voided\",\n  \"student\": {\n    \"id\": \"{{student019Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher2Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/exams/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture exam4Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.title === \"Seed exam 4 - voided\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"exam4Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 4 - voided void",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/{{exam4Id}}/status?status=VOIDED"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 5 - written",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-11-01\",\n  \"status\": \"MARKED\",\n  \"title\": \"Seed exam 5 - written\",\n  \"student\": {\n    \"id\": \"{{student020Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher2Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/exams/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture exam5Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.title === \"Seed exam 5 - written\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"exam5Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 5 - written written",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/{{exam5Id}}/status?status=WRITTEN"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 6 - marked",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-11-02\",\n  \"status\": \"MARKED\",\n  \"title\": \"Seed exam 6 - marked\",\n  \"student\": {\n    \"id\": \"{{student020Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher2Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/exams/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture exam6Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.title === \"Seed exam 6 - marked\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"exam6Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 6 - marked written",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/{{exam6Id}}/status?status=WRITTEN"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 6 - marked marked",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/{{exam6Id}}/status?status=MARKED"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 7 - planned",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-11-03\",\n  \"status\": \"MARKED\",\n  \"title\": \"Seed exam 7 - planned\",\n  \"student\": {\n    \"id\": \"{{student021Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher3Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/exams/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture exam7Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.title === \"Seed exam 7 - planned\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"exam7Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 8 - planned",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-11-04\",\n  \"status\": \"MARKED\",\n  \"title\": \"Seed exam 8 - planned\",\n  \"student\": {\n    \"id\": \"{{student022Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher3Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/exams/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture exam8Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.title === \"Seed exam 8 - planned\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"exam8Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 9 - planned",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-11-05\",\n  \"status\": \"MARKED\",\n  \"title\": \"Seed exam 9 - planned\",\n  \"student\": {\n    \"id\": \"{{student018Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher3Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/exams/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture exam9Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.title === \"Seed exam 9 - planned\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"exam9Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - Seed exam 10 - planned",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-11-06\",\n  \"status\": \"MARKED\",\n  \"title\": \"Seed exam 10 - planned\",\n  \"student\": {\n    \"id\": \"{{student019Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher3Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/exams/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture exam10Id\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.title === \"Seed exam 10 - planned\");\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"exam10Id\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - move first pair to paper date",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/exams/update/{{exam1Id}}",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-10-20\",\n  \"title\": \"Seed exam 1 - voided pair\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Seed - move marked pair to paper date",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/exams/update/{{exam2Id}}",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-10-20\",\n  \"title\": \"Seed exam 2 - marked pair\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "A2 - CRUD",
+      "item": [
+        {
+          "name": "A2 - Save CRUD subject",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/subjects/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman CRUD subject\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/subjects/all\", method: \"GET\"}, function (err, response) { pm.test(\"Capture crudSubjectId\", function () { pm.expect(err).to.equal(null); pm.expect(response.code).to.equal(200); const record = response.json().find(item => item.name === \"Postman CRUD subject\"); pm.expect(record, \"record exists\").to.exist; pm.collectionVariables.set(\"crudSubjectId\", record.id); }); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - Save CRUD classroom",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/classrooms/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomNumber\": 99,\n  \"name\": \"Postman CRUD classroom\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/classrooms/all\", method: \"GET\"}, function (err, response) {\n  pm.test(\"Capture crudClassroomId\", function () {\n    pm.expect(err).to.equal(null);\n    pm.expect(response.code).to.equal(200);\n    const records = response.json();\n    const record = records.find(item => item.roomNumber === 99);\n    pm.expect(record, \"record exists\").to.exist;\n    pm.collectionVariables.set(\"crudClassroomId\", record.id);\n  });\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - Save CRUD teacher",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/teachers/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"CRUD\",\n  \"lastName\": \"Teacher\",\n  \"email\": \"postman.crud.teacher@example.com\",\n  \"subjects\": [\n    {\n      \"id\": \"{{subjectMath}}\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/teachers/all\", method: \"GET\"}, function (err, response) { pm.test(\"Capture crudTeacherId\", function () { pm.expect(err).to.equal(null); pm.expect(response.code).to.equal(200); const record = response.json().find(item => item.email === \"postman.crud.teacher@example.com\"); pm.expect(record, \"record exists\").to.exist; pm.collectionVariables.set(\"crudTeacherId\", record.id); }); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - Save CRUD student",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/students/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"CRUD\",\n  \"lastName\": \"Iradukunda\",\n  \"regNumber\": \"POSTMAN-CRUD-001\",\n  \"guardianPhone\": \"+250700000099\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/students/all\", method: \"GET\"}, function (err, response) { pm.test(\"Capture crudStudentId\", function () { pm.expect(err).to.equal(null); pm.expect(response.code).to.equal(200); const record = response.json().find(item => item.regNumber === \"POSTMAN-CRUD-001\"); pm.expect(record, \"record exists\").to.exist; pm.collectionVariables.set(\"crudStudentId\", record.id); }); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - Save CRUD exam",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-11-08\",\n  \"status\": \"MARKED\",\n  \"title\": \"Postman CRUD exam\",\n  \"student\": {\n    \"id\": \"{{student018Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher1Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/exams/all\", method: \"GET\"}, function (err, response) { pm.test(\"Capture crudExamId\", function () { pm.expect(err).to.equal(null); pm.expect(response.code).to.equal(200); const exam = response.json().find(item => item.title === \"Postman CRUD exam\"); pm.expect(exam, \"CRUD exam exists\").to.exist; pm.collectionVariables.set(\"crudExamId\", exam.id); }); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - CRUD exam to written",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/{{crudExamId}}/status?status=WRITTEN"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Exact status message\", function () { pm.response.to.have.body(\"Exam status updated successfully\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - CRUD exam to marked",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/{{crudExamId}}/status?status=MARKED"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Exact status message\", function () { pm.response.to.have.body(\"Exam status updated successfully\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - Get all classrooms",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/classrooms/all"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - Get classroom by id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/classrooms/{{crudClassroomId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - Update classroom",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/classrooms/update/{{crudClassroomId}}",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomNumber\": 99,\n  \"name\": \"Updated CRUD classroom\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - Delete classroom",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/classrooms/delete/{{crudClassroomId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - Unknown classroom returns 404",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/classrooms/00000000-0000-0000-0000-000000000000"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - Delete CRUD teacher",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/teachers/delete/{{crudTeacherId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - Delete CRUD student",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/students/delete/{{crudStudentId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2 - Delete CRUD subject",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/subjects/delete/{{crudSubjectId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "B - Derived queries",
+      "item": [
+        {
+          "name": "B1",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/students/by-last-name?lastName=iradukunda"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Two required Iradukunda students returned\", function () { pm.expect(pm.response.json().length).to.be.at.least(2); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "B2",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/exams/by-status?status=PLANNED"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Planned exams returned\", function () { pm.expect(pm.response.json().length).to.be.at.least(1); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "B3",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/exams/between?start=2026-10-01&end=2026-10-31"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"October exams returned\", function () { pm.expect(pm.response.json().length).to.be.at.least(1); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "C - JPQL queries",
+      "item": [
+        {
+          "name": "C1",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/teachers/by-subject?name=mathematics"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Mathematics teachers returned\", function () { pm.expect(pm.response.json().length).to.be.at.least(1); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "C2",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/classrooms/free"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Room 4 is free before D4\", function () { pm.expect(pm.response.json().some(c => c.roomNumber === 4)).to.equal(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "C3",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/subjects/unused"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Kinyarwanda is unused\", function () { pm.expect(pm.response.json().some(s => s.name === \"Kinyarwanda\")).to.equal(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "C4",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/students/of-teacher/{{teacher1Id}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Teacher has students\", function () { pm.expect(pm.response.json().length).to.be.at.least(1); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "D - Business rules",
+      "item": [
+        {
+          "name": "D1 - Save future exam (status forced PLANNED)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-11-09\",\n  \"status\": \"MARKED\",\n  \"title\": \"Postman D1 safe save\",\n  \"student\": {\n    \"id\": \"{{student021Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher1Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/exams/all\", method: \"GET\"}, function (err, response) { pm.test(\"Capture businessExamId\", function () { pm.expect(err).to.equal(null); pm.expect(response.code).to.equal(200); const record = response.json().find(item => item.title === \"Postman D1 safe save\"); pm.expect(record, \"record exists\").to.exist; pm.collectionVariables.set(\"businessExamId\", record.id); }); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D1 - Reject past exam date",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-10-19\",\n  \"title\": \"Postman D1 past rejection\",\n  \"student\": {\n    \"id\": \"{{student021Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher1Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Exact past-date message\", function () { pm.response.to.have.body(\"Exam date cannot be in the past\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D1 - Reject duplicate active teacher/date",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/exams/save",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examDate\": \"2026-10-30\",\n  \"title\": \"Postman D1 duplicate rejection\",\n  \"student\": {\n    \"id\": \"{{student021Id}}\"\n  },\n  \"teacher\": {\n    \"id\": \"{{teacher1Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"Exact duplicate message\", function () { pm.response.to.have.body(\"Teacher already supervises an exam on that date\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D1 - Delete safe-save test exam",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/exams/delete/{{businessExamId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D2 - Planned to written",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/{{exam7Id}}/status?status=WRITTEN"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Exact status message\", function () { pm.response.to.have.body(\"Exam status updated successfully\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D2 - Reject invalid transition",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/{{exam2Id}}/status?status=PLANNED"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Exact transition message\", function () { pm.response.to.have.body(\"Cannot change status from MARKED to PLANNED\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D2 - Unknown exam returns 404",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/00000000-0000-0000-0000-000000000000/status?status=WRITTEN"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D3 - Add subject",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/teachers/{{teacher1Id}}/subjects/{{subjectEnglish}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Exact add-subject message\", function () { pm.response.to.have.body(\"Subject added to the teacher\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D3 - Reject duplicate subject",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/teachers/{{teacher1Id}}/subjects/{{subjectEnglish}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"Exact duplicate-subject message\", function () { pm.response.to.have.body(\"The teacher already has that subject\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D4 - Move teacher to room 4",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/teachers/{{teacher1Id}}/classroom?roomNumber=4"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D4 - Reject occupied classroom",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/teachers/{{teacher2Id}}/classroom?roomNumber=4"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D4 - Restore teacher 2 classroom",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/teachers/{{teacher2Id}}/classroom?roomNumber=2"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D4 - Restore teacher 1 classroom",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/teachers/{{teacher1Id}}/classroom?roomNumber=1"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "E - Grades",
+      "item": [
+        {
+          "name": "E1 - Save grade for marked exam",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/grades/save?examId={{crudExamId}}",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subjectName\": \"Mathematics\",\n  \"comment\": \"{{gradeTestComment}}\",\n  \"marks\": 78\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.sendRequest({url: pm.collectionVariables.get(\"baseUrl\") + \"/api/grades/student/S4-2026-018\", method: \"GET\"}, function (err, response) { pm.test(\"Capture gradeId\", function () { pm.expect(err).to.equal(null); pm.expect(response.code).to.equal(200); const grade = response.json().find(item => item.comment === pm.collectionVariables.get(\"gradeTestComment\")); pm.expect(grade, \"saved grade exists\").to.exist; pm.collectionVariables.set(\"gradeId\", grade.id); }); });"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"gradeTestComment\", \"Postman Newman grade \" + pm.variables.replaceIn(\"{{$guid}}\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "E1 - Reject grade for unmarked exam",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/grades/save?examId={{exam7Id}}",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subjectName\": \"Mathematics\",\n  \"comment\": \"Exam is not marked\",\n  \"marks\": 65\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Exact unmarked-grade message\", function () { pm.response.to.have.body(\"Grades are only for MARKED exams\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "E2 - Student grade history",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/grades/student/S4-2026-018"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Grade history contains saved grade\", function () { pm.expect(pm.response.json().some(item => item.id === pm.collectionVariables.get(\"gradeId\"))).to.equal(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "E3 - Protect exam with grades",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/exams/delete/{{crudExamId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"Exact grade protection message\", function () { pm.response.to.have.body(\"That exam has grades, delete them first\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "E3 - Delete grade",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/grades/delete/{{gradeId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "E3 - Delete exam after grade deletion",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/exams/delete/{{crudExamId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "F - Reports and bulk updates",
+      "item": [
+        {
+          "name": "F1",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/exams/stats/by-status"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Status groups returned\", function () { pm.expect(pm.response.json().length).to.be.at.least(3); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "F2",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/exams/cancel-day?teacherId={{teacher1Id}}&date=2026-10-20"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Only the non-marked exam was updated\", function () { pm.response.to.have.body(\"1 exams cancelled\"); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bonus",
+      "item": [
+        {
+          "name": "Bonus - Dashboard summary",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/dashboard/summary"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Dashboard fields returned\", function () { const d = pm.response.json(); [\"students\",\"teachers\",\"freeClassrooms\",\"examsToday\",\"planned\",\"grades\"].forEach(k => pm.expect(d).to.have.property(k)); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Bonus - Exams page",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/exams/page?page=0&size=5&sort=examDate,desc"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response completed successfully\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "pm.test(\"Page metadata returned\", function () { const p = pm.response.json(); pm.expect(p).to.have.property(\"totalPages\"); pm.expect(p).to.have.property(\"totalElements\"); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
